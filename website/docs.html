@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>VidMake Documentation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #020617;
+      color: #e5e7eb;
+    }
+    header {
+      padding: 2rem 1.5rem;
+      border-bottom: 1px solid #111827;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2rem;
+    }
+    main {
+      max-width: 960px;
+      margin: 2rem auto 4rem;
+      padding: 0 1.5rem;
+    }
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+    }
+    pre {
+      background: #020617;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-size: 0.9rem;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+    a { color: #60a5fa; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+    }
+    th, td {
+      border: 1px solid #111827;
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    th {
+      background: #020617;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VidMake Documentation</h1>
+    <p>Script-based video maker using <code>.VidMake</code> JSON files.</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>1. Overview</h2>
+      <p>
+        VidMake turns JSON description files (<code>.VidMake</code>) into rendered MP4 videos.
+        The initial version focuses on timed text overlays on a solid background.
+      </p>
+    </section>
+
+    <section>
+      <h2>2. File Format: <code>.VidMake</code></h2>
+      <p>A <code>.VidMake</code> file is a JSON object with these top-level fields:</p>
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>resolution</td><td>[width, height]</td><td>no</td><td>Video resolution (default [1280, 720])</td></tr>
+          <tr><td>fps</td><td>number</td><td>no</td><td>Frames per second (default 30)</td></tr>
+          <tr><td>duration</td><td>number</td><td>yes</td><td>Total duration of the video in seconds</td></tr>
+          <tr><td>background_color</td><td>string</td><td>no</td><td>Hex color for background (default <code>#000000</code>)</td></tr>
+          <tr><td>video_codec</td><td>string</td><td>no</td><td>FFmpeg video codec (default <code>libx264</code>)</td></tr>
+          <tr><td>audio_codec</td><td>string</td><td>no</td><td>FFmpeg audio codec (default <code>aac</code>)</td></tr>
+          <tr><td>texts</td><td>array</td><td>no</td><td>List of text events</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.1 Text event objects</h3>
+      <p>Each entry in <code>texts</code> is an object:</p>
+      <table>
+        <thead>
+          <tr><th>Field</th><th>Type</th><th>Required</th><th>Description</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>text</td><td>string</td><td>yes</td><td>Text to render</td></tr>
+          <tr><td>start</td><td>number</td><td>no</td><td>Start time (seconds, default 0)</td></tr>
+          <tr><td>end</td><td>number</td><td>no</td><td>End time (seconds, default = duration)</td></tr>
+          <tr><td>x</td><td>number or "center"</td><td>no</td><td>X position (pixels or "center")</td></tr>
+          <tr><td>y</td><td>number or "center"</td><td>no</td><td>Y position (pixels or "center")</td></tr>
+          <tr><td>fontsize</td><td>number</td><td>no</td><td>Font size (default 48)</td></tr>
+          <tr><td>color</td><td>string</td><td>no</td><td>Text color (named or hex, default <code>#FFFFFF</code>)</td></tr>
+        </tbody>
+      </table>
+
+      <h3>2.2 Full example</h3>
+      <pre><code>{
+  "resolution": [1920, 1080],
+  "fps": 30,
+  "duration": 10,
+  "background_color": "#101827",
+  "video_codec": "libx264",
+  "audio_codec": "aac",
+  "texts": [
+    {
+      "text": "VidMake Intro",
+      "start": 0,
+      "end": 3,
+      "x": "center",
+      "y": "center",
+      "fontsize": 72,
+      "color": "#38bdf8"
+    },
+    {
+      "text": "Script-based video in JSON",
+      "start": 3,
+      "end": 7,
+      "x": "center",
+      "y": 600,
+      "fontsize": 40,
+      "color": "#e5e7eb"
+    }
+  ]
+}
+</code></pre>
+    </section>
+
+    <section>
+      <h2>3. CLI Usage</h2>
+      <pre><code>pip install -r requirements.txt
+python vidmake.py my-video.VidMake out.mp4
+</code></pre>
+      <p>
+        Requirements:
+      </p>
+      <ul>
+        <li>Python 3.9+</li>
+        <li><code>ffmpeg</code> installed and on PATH</li>
+        <li><code>moviepy</code> (installed via <code>requirements.txt</code>)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>4. Roadmap</h2>
+      <ul>
+        <li>Image and audio tracks</li>
+        <li>Keyframe-style transitions</li>
+        <li>Named timelines / reusable templates</li>
+        <li>Web editor for <code>.VidMake</code> files</li>
+      </ul>
+    </section>
+  </main>
+</body>
+</html>
