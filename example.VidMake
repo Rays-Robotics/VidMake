@@ -1,0 +1,37 @@
+{
+  "resolution": [1280, 720],
+  "fps": 30,
+  "duration": 8,
+  "background_color": "#20232A",
+  "video_codec": "libx264",
+  "audio_codec": "aac",
+  "texts": [
+    {
+      "text": "VidMake Demo",
+      "start": 0,
+      "end": 3,
+      "x": "center",
+      "y": "center",
+      "fontsize": 64,
+      "color": "#61DAFB"
+    },
+    {
+      "text": "Script-based video generation",
+      "start": 3,
+      "end": 6,
+      "x": "center",
+      "y": 450,
+      "fontsize": 40,
+      "color": "#FFFFFF"
+    },
+    {
+      "text": "Powered by VidMake",
+      "start": 6,
+      "end": 8,
+      "x": "center",
+      "y": "center",
+      "fontsize": 48,
+      "color": "#FFFFFF"
+    }
+  ]
+}
